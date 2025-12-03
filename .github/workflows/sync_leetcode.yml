@@ -1,0 +1,23 @@
+name: Sync LeetCode
+
+on:
+  workflow_dispatch:        # 수동 실행 가능
+  schedule:
+    - cron: "0 8 * * *"     # 매일 08:00 UTC에 실행 (원하면 나중에 수정 가능)
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Sync
+        uses: joshcai/leetcode-sync@v1.7
+        with:
+          github-token: ${{ github.token }}
+          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
+          destination-folder: leetcode
+          verbose: true
+          commit-header: "[LeetCode Sync]"
